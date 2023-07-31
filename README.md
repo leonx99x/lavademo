@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# Project Title
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a React application that interacts with the Lava Network blockchain. It retrieves the most recent blocks and processes each block to get the `relay.specId` and `relayNum` fields. This data is then displayed in a simple table.
 
-## Available Scripts
+## Getting Started
 
-In the project directory, you can run:
+### Prerequisites
 
-### `npm start`
+- Node.js (version 14.x.x)
+- Yarn (version 1.x.x)
+- Docker (optional)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Installing Dependencies
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+In your project directory, install the required dependencies by running the following command:
 
-### `npm test`
+```bash
+yarn install
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This will install all the necessary packages specified in the package.json file, including react, rxjs, @lavanet/lava-sdk, axios and @cosmjs/encoding.
 
-### `npm run build`
+### Running the Application Locally
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To run the application locally, use the following command in your project directory:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+bash
+Copy code
+yarn start
+This will start the development server and the application will be available at http://localhost:3000.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Building the Application
 
-### `npm run eject`
+To build the application for production, run the following command:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+bash
+Copy code
+yarn build
+This will create a build directory with the production-ready static files.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Running the Application with Docker
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+If you have Docker installed, you can build a Docker image and run the application inside a Docker container. Here's how to do it:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Build the Docker image:
+bash
+Copy code
+docker build -t your-image-name .
+Run the Docker container:
+bash
+Copy code
+docker run -p 8080:80 your-image-name
+With this, your application will be available at http://localhost:8080.
 
-## Learn More
+## Walkthrough
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The application uses the LavaSDK library to interact with the Lava Network blockchain. The application has a main functional component, App, which utilizes several helper functions to fetch and process the block data.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+fetchLatestBlock(lavaNet:LavaSDK): Fetches the latest block data from the Lava Network.
 
-### Code Splitting
+fetchBlock(height: number): Fetches a specific block data based on its height.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+getHeight(information: any): Retrieves the height of a block from the block data.
 
-### Analyzing the Bundle Size
+processBlockData(information:any): Processes the block data to extract the relay.specId and relayNum fields and stores it in a dictionary.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+In the App component, there are two useEffect hooks. The first one is used to initialize the LavaSDK instance and fetch the data of the most recent 20 blocks when the component mounts.
 
-### Making a Progressive Web App
+The second useEffect hook fetches the latest block every 5 seconds and processes it. If any blocks were missed (i.e., more than one block was added since the last fetch), it fetches and processes the missing blocks as well.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+The processed block data is stored in the blocksData state variable, which is an object where each key is a block height and each value is another object mapping relay.specId to relayNum.
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Finally, the App component renders a table with the relay.specId and relayNum of each block, sorted by relayNum in descending order.
