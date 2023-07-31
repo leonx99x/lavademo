@@ -75,7 +75,7 @@ function processBlockData(information:any) {
   }
   return Object.keys(blockData).length > 0 ? { [information.block.header.height]: blockData } : {};
 }
-
+//type for chain data
 type ChainData = {
   specId: string;
   relayNum: any; // Use a more specific type if possible
@@ -230,7 +230,7 @@ useEffect(() => {
   const sortedArray = chainDataArray.sort((a, b) => b.relayNum - a.relayNum).slice(0, 10);
   setSortedChainDataArray(sortedArray);
 }, [chainData]);
-
+//if there is no data show loading indicator
 useEffect(() => {
   if (!sortedChainDataArray || sortedChainDataArray.length === 0) {
     setIsLoading(true);
