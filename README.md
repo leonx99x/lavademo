@@ -24,14 +24,11 @@ This will install all the necessary packages specified in the package.json file,
 
 To run the application locally, use the following command in your project directory:
 
-bash
-Copy code
-yarn start
-This will start the development server and the application will be available at http://localhost:3000.
+docker_run shell codes can run development setting in docker. To run you need docker installed. 
 
 ### Building the Application
 
-To build the application for production, run the following command:
+To build the application for production, run the following command(since build was slow I removed from shell codes):
 
 bash
 Copy code
